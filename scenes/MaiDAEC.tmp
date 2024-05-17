@@ -28,9 +28,6 @@ obstacle = ExtResource("7_buoq6")
 wait_time = 0.75
 autostart = true
 
-[node name="coinspawner" type="Timer" parent="."]
-autostart = true
-
 [node name="Background" type="Node2D" parent="." groups=["DynamicObject"]]
 position = Vector2(800, 480)
 scale = Vector2(2, 2)
@@ -105,4 +102,3 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [connection signal="timeout" from="Spawner" to="." method="_on_spawner_timeout"]
-[connection signal="timeout" from="coinspawner" to="." method="_on_spawner_timeout"]
