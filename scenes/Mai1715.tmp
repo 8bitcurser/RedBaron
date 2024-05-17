@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dgpgji4byvmcm" path="res://scenes/obstacle.tscn" id="7_buoq6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w1yxe"]
-radius = 33.541
+radius = 34.15
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hfksv"]
 size = Vector2(1600, 20)
@@ -46,13 +46,11 @@ texture = ExtResource("1_0cuni")
 position = Vector2(800, 0)
 texture = ExtResource("1_0cuni")
 
-[node name="Player" type="RigidBody2D" parent="." groups=["Player"]]
+[node name="Player" type="RigidBody2D" parent="."]
 position = Vector2(171, 480)
 mass = 2.2
 gravity_scale = 1.6
-continuous_cd = 2
-max_contacts_reported = 10
-contact_monitor = true
+continuous_cd = 1
 script = ExtResource("4_er46e")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
