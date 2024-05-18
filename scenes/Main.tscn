@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://borketw7uo408"]
+[gd_scene load_steps=17 format=3 uid="uid://borketw7uo408"]
 
 [ext_resource type="Texture2D" uid="uid://cngxlbqoe8bkc" path="res://assets/Background.png" id="1_0cuni"]
 [ext_resource type="Script" path="res://scripts/Background.gd" id="1_7ppxg"]
@@ -8,6 +8,12 @@
 [ext_resource type="Script" path="res://scripts/Player.gd" id="4_er46e"]
 [ext_resource type="FontFile" uid="uid://ekbu38aotsdw" path="res://assets/kenvector_future.ttf" id="6_du3ke"]
 [ext_resource type="PackedScene" uid="uid://dgpgji4byvmcm" path="res://scenes/obstacle.tscn" id="7_buoq6"]
+[ext_resource type="Texture2D" uid="uid://droo0qwdbd7ih" path="res://assets/Circle.png" id="8_hbon8"]
+[ext_resource type="Script" path="res://scripts/GameOver.gd" id="9_kekrv"]
+
+[sub_resource type="Curve" id="Curve_2llin"]
+_data = [Vector2(0, 0.987129), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w1yxe"]
 radius = 33.541
@@ -20,6 +26,15 @@ bg_color = Color(0.164706, 0.164706, 0.164706, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5vu85"]
 bg_color = Color(0.133333, 0.658824, 0.454902, 1)
+
+[sub_resource type="GDScript" id="GDScript_u0vjg"]
+script/source = "extends Button
+
+
+func _on_pressed():
+	get_tree().paused = false
+	get_tree().reload_current_scene()
+"
 
 [node name="main" type="Node"]
 script = ExtResource("1_83jhg")
@@ -55,11 +70,27 @@ max_contacts_reported = 10
 contact_monitor = true
 script = ExtResource("4_er46e")
 
+[node name="Particles" type="CPUParticles2D" parent="Player"]
+z_index = 6
+position = Vector2(-40, -13)
+amount = 25
+lifetime = 0.4
+lifetime_randomness = 0.45
+texture = ExtResource("8_hbon8")
+spread = 180.0
+gravity = Vector2(-2500, 0)
+initial_velocity_min = 48.04
+initial_velocity_max = 332.35
+scale_amount_min = 0.5
+scale_amount_max = 0.5
+scale_amount_curve = SubResource("Curve_2llin")
+color = Color(0.877616, 0.877616, 0.877616, 1)
+
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
 texture = ExtResource("2_ek2jq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-position = Vector2(2, -2)
+position = Vector2(1, 0)
 shape = SubResource("CircleShape2D_w1yxe")
 
 [node name="walls" type="Node" parent="."]
@@ -109,5 +140,61 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="GameOver" type="Control" parent="."]
+process_mode = 3
+visible = false
+z_index = 10
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("9_kekrv")
+
+[node name="ColorRect" type="ColorRect" parent="GameOver"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.380392, 0.380392, 0.380392, 0.396078)
+
+[node name="Message" type="Label" parent="GameOver"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -430.0
+offset_top = -84.0
+offset_right = 444.0
+offset_bottom = 102.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("6_du3ke")
+theme_override_font_sizes/font_size = 80
+
+[node name="Restart" type="Button" parent="GameOver"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -391.0
+offset_top = -314.0
+offset_right = 388.0
+offset_bottom = -109.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("6_du3ke")
+theme_override_font_sizes/font_size = 80
+text = "Play Again!"
+script = SubResource("GDScript_u0vjg")
+
 [connection signal="timeout" from="Spawner" to="." method="_on_spawner_timeout"]
 [connection signal="timeout" from="coinspawner" to="." method="_on_coinspawner_timeout"]
+[connection signal="pressed" from="GameOver/Restart" to="GameOver" method="_on_restart_pressed"]

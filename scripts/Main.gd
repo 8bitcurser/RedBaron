@@ -13,6 +13,8 @@ var last_score_modifier: int = 0
 @onready var score = $UI/healthbar/score
 @onready var spawner = $Spawner
 @onready var player = $Player
+@onready var game_over = $GameOver
+@onready var message = $GameOver/Message
 
 func _process(delta):
 	for dynamic_object in get_tree().get_nodes_in_group('DynamicObject'):
@@ -21,12 +23,14 @@ func _process(delta):
 	if health > 0:
 		health -= delta * health_decrease_speed
 		healthbar.value = health
-	else:
-		get_tree().paused = true
 
 	score_val += delta
 	var formatted_score: String = str("%.2f" % score_val)
 	score.text = str(formatted_score)
+
+	if health <= 0:
+		game_over_exec(str(formatted_score))
+
 	var score_int = int(score_val)
 	if score_val > 2 and (score_int % 10 == 0) and score_int != last_score_modifier:
 		last_score_modifier = score_int
@@ -67,11 +71,17 @@ func _on_coinspawner_timeout():
 func _on_coin_coll(body: Node2D, coin_ins: Node2D) -> void:
 	if body.is_in_group('Player'):
 		health += 4
-		coin_ins.queue_free()
+		
+		coin_ins.get_node('AnimationPlayer').play('pickup')
 		if health > 100:
 			health = 100
 
 func _on_obstacle_coll(body: Node2D, obs_ins: Node2D) -> void:
 	if body.is_in_group('Player'):
-		health -= 10
+		health -= 100
 
+
+func game_over_exec(score_value: String) -> void:
+	game_over.visible = true
+	message.text = 'You almost made it! \nYour score was: ' + str(score_value)
+	get_tree().paused = true

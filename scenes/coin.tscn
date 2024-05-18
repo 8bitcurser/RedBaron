@@ -1,9 +1,69 @@
-[gd_scene load_steps=3 format=3 uid="uid://k6q1x31aaw4a"]
+[gd_scene load_steps=6 format=3 uid="uid://k6q1x31aaw4a"]
 
 [ext_resource type="Texture2D" uid="uid://dkkgybawgxw88" path="res://assets/Coin.png" id="1_eqfi7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dkjmb"]
 radius = 116.155
+
+[sub_resource type="Animation" id="Animation_myekn"]
+resource_name = "pickup"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.5, 0.5), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_mhs1r"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.5, 0.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l8oac"]
+_data = {
+"RESET": SubResource("Animation_mhs1r"),
+"pickup": SubResource("Animation_myekn")
+}
 
 [node name="coin" type="Area2D" groups=["DynamicObject"]]
 scale = Vector2(0.5, 0.5)
@@ -14,3 +74,9 @@ shape = SubResource("CircleShape2D_dkjmb")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_eqfi7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_l8oac")
+}
+speed_scale = 4.0
