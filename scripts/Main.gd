@@ -73,6 +73,7 @@ func _on_coin_coll(body: Node2D, coin_ins: Node2D) -> void:
 		health += 4
 		
 		coin_ins.get_node('AnimationPlayer').play('pickup')
+		$Player.get_node('CoinCollected').play()
 		if health > 100:
 			health = 100
 
@@ -82,6 +83,7 @@ func _on_obstacle_coll(body: Node2D, obs_ins: Node2D) -> void:
 
 
 func game_over_exec(score_value: String) -> void:
+	$Player/GameOver.play()
 	game_over.visible = true
 	message.text = 'You almost made it! \nYour score was: ' + str(score_value)
 	get_tree().paused = true

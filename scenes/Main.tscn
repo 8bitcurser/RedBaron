@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://borketw7uo408"]
+[gd_scene load_steps=20 format=3 uid="uid://borketw7uo408"]
 
 [ext_resource type="Texture2D" uid="uid://cngxlbqoe8bkc" path="res://assets/Background.png" id="1_0cuni"]
 [ext_resource type="Script" path="res://scripts/Background.gd" id="1_7ppxg"]
@@ -10,6 +10,9 @@
 [ext_resource type="PackedScene" uid="uid://dgpgji4byvmcm" path="res://scenes/obstacle.tscn" id="7_buoq6"]
 [ext_resource type="Texture2D" uid="uid://droo0qwdbd7ih" path="res://assets/Circle.png" id="8_hbon8"]
 [ext_resource type="Script" path="res://scripts/GameOver.gd" id="9_kekrv"]
+[ext_resource type="AudioStream" uid="uid://1nh5hxmigkww" path="res://assets/CoinCollected.ogg" id="9_q5bmu"]
+[ext_resource type="AudioStream" uid="uid://j76rqhha5bpj" path="res://assets/GameOver.ogg" id="10_faks6"]
+[ext_resource type="AudioStream" uid="uid://cg250sjhkj5f5" path="res://assets/Music.wav" id="13_0e157"]
 
 [sub_resource type="Curve" id="Curve_2llin"]
 _data = [Vector2(0, 0.987129), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -92,6 +95,13 @@ texture = ExtResource("2_ek2jq")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 position = Vector2(1, 0)
 shape = SubResource("CircleShape2D_w1yxe")
+
+[node name="CoinCollected" type="AudioStreamPlayer" parent="Player"]
+stream = ExtResource("9_q5bmu")
+
+[node name="GameOver" type="AudioStreamPlayer" parent="Player"]
+process_mode = 3
+stream = ExtResource("10_faks6")
 
 [node name="walls" type="Node" parent="."]
 
@@ -194,6 +204,10 @@ theme_override_fonts/font = ExtResource("6_du3ke")
 theme_override_font_sizes/font_size = 80
 text = "Play Again!"
 script = SubResource("GDScript_u0vjg")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_0e157")
+autoplay = true
 
 [connection signal="timeout" from="Spawner" to="." method="_on_spawner_timeout"]
 [connection signal="timeout" from="coinspawner" to="." method="_on_coinspawner_timeout"]
